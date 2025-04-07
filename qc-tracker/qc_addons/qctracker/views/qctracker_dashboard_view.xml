@@ -8,29 +8,25 @@
             </div>
             
             <style>
-                /* Supprimer les marges et paddings */
+                /* Supprimer les marges et paddings du conteneur principal */
                 .o_action_manager {
                     margin: 0 !important;
                     padding: 0 !important;
                     overflow: hidden !important;
                 }
                 
-                /* Cacher les éléments de contrôle */
+                /* Cacher les éléments de contrôle mais PAS le menu principal */
                 .o_control_panel, .o_cp_buttons, .o_cp_left, .o_cp_right,
                 .o_form_buttons_view, .o_form_buttons_edit, .breadcrumb {
                     display: none !important;
                 }
                 
-                /* Ajuster la zone de contenu principal */
+                /* Ajuster la zone de contenu principal sans cacher le menu */
                 .o_content {
                     padding: 0 !important;
                     margin: 0 !important;
                     height: calc(100vh - 46px) !important; /* Hauteur totale moins la hauteur du menu */
                     width: 100% !important;
-                    position: absolute !important;
-                    top: 46px !important; /* Position sous le menu principal */
-                    left: 0 !important;
-                    right: 0 !important;
                     overflow: hidden !important;
                 }
                 
@@ -43,7 +39,7 @@
                     overflow: hidden !important;
                 }
                 
-                /* S'assurer que l'iframe occupe tout l'espace */
+                /* S'assurer que l'iframe occupe tout l'espace disponible */
                 #dashboard_iframe {
                     width: 100% !important;
                     height: 100% !important;
@@ -52,37 +48,23 @@
                     margin: 0 !important;
                     padding: 0 !important;
                 }
-                
-                /* Corriger l'espacement après le menu */
-                .o_web_client {
-                    margin: 0 !important;
-                    padding: 0 !important;
-                }
-                
-                /* Gestion de la sidebar si présente */
-                .o_web_client.o_chatter_position_sided .o_action_manager {
-                    width: 100% !important;
-                    margin-right: 0 !important;
-                }
             </style>
             
             <script type="text/javascript">
                 $(document).ready(function() {
-                    // Supprimer les éléments de contrôle
-                    $('.o_control_panel').remove();
-                    $('.o_cp_buttons').remove();
-                    $('.breadcrumb').remove();
-                    $('.o_form_buttons_view').remove();
-                    $('.o_form_buttons_edit').remove();
+                    // Ne pas supprimer les éléments, juste les cacher
+                    $('.o_control_panel').hide();
+                    $('.o_cp_buttons').hide();
+                    $('.breadcrumb').hide();
+                    $('.o_form_buttons_view').hide();
+                    $('.o_form_buttons_edit').hide();
                     
                     // Ajuster dynamiquement l'iframe
                     function adjustIframe() {
                         var headerHeight = $('.o_main_navbar').outerHeight() || 46;
-                        var sidebarWidth = $('.o_menu_apps').is(':visible') ? $('.o_menu_apps').outerWidth() : 0;
                         
                         $('.o_content').css({
                             'height': 'calc(100vh - ' + headerHeight + 'px)',
-                            'top': headerHeight + 'px',
                             'width': '100%'
                         });
                         
@@ -90,17 +72,12 @@
                             'width': '100%',
                             'height': '100%'
                         });
-                        
-                        // Forcer le rafraîchissement du layout
-                        setTimeout(function() {
-                            $(window).trigger('resize');
-                        }, 100);
                     }
                     
                     // Appliquer immédiatement
                     adjustIframe();
                     
-                    // Réappliquer après un court délai pour s'assurer que tout est chargé
+                    // Réappliquer après un court délai
                     setTimeout(adjustIframe, 300);
                     
                     // Réappliquer lors du redimensionnement
